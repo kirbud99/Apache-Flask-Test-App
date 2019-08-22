@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <style>
+        /* CSS styles for the chart class */
+        * {
+            box-sizing: border-box;
+          }
+
+          /* Create two unequal columns that floats next to each other */
+          .column {
+            float: left;
+            padding: 10px;
+            height: 680px;
+          }
+
+          .left {
+            width: 33%;
+          }
+
+          .right {
+            width: 67%;
+          }
+
+          /* Clear floats after the columns */
+          .row:after {
+            content: "";
+            display: table;
+            clear: both;
+          }
+
+          .column2 {
+            padding: 10px;
+            float: left;
+            width: 50%;
+            height: 395px;
+          }
+        .chart {
+            height: 250px;
+            text-align: center;
+            display: none;
+        }
+        /* CSS styles for the table class */
+        .customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            display: none;
+            margin-bottom: 20px;
+          }
+          .customers td, #customers th {
+            border: 2px solid #ddd;
+            padding: 8px;
+            text-align: center;
+          }
+          .customers tr:nth-child(even){background-color: #f2f2f2;}
+          .customers tr:hover {background-color: #ddd;}
+          .customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #1F77B4;
+            color: white;
+            text-align: center;
+            border: 2px solid #ffffff;
+          }
+          /* CSS styles for the top navigation bar */
+          .topnav {
+            background-color: #333;
+            overflow: hidden;
+          }
+          /* Style the links inside the navigation bar */
+          .topnav a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 12px 11px;
+            text-decoration: none;
+            font-size: 17px;
+          }
+          /* Change the color of links on hover */
+          .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+          }
+          /* Add a color to the active/current link */
+          .topnav a.active {
+            background-color: #1F77B4;
+            color: white;
+          }
+    </style>
+</head>
+<body>
+<section class="section">
+    <div class="container">
+        <!-- The title data is statically accessed from the flask route -->
+        <h1 class="title">{{t}} </h1>
+        <p class="subtitle">Device Name: {{n}} </p>
+        <!-- The top navigation bar which allows one to look through the states -->
+        <div class="topnav">
+            <a class="active" href="#home">Home<br>Page</a>
+            {%if state == 1%}
+            <a href="#state1">State<br>#1</a>
+            {% endif %}
+
+            {%if state == 2%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            {% endif %}
+
+            {%if state == 3%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            {% endif %}
+
+            {%if state == 4%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            {% endif %}
+
+            {%if state == 5%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            {% endif %}
+
+            {%if state == 6%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            {% endif %}
+
+            {%if state == 7%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            {% endif %}
+
+            {%if state == 8%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            <a href="#state8">State<br>#8</a>
+            {% endif %}
+
+            {%if state == 9%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            <a href="#state8">State<br>#8</a>
+            <a href="#state9">State<br>#9</a>
+            {% endif %}
+
+            {%if state == 10%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            <a href="#state8">State<br>#8</a>
+            <a href="#state9">State<br>#9</a>
+            <a href="#state10">State<br>#10</a>
+            {% endif %}
+
+            {%if state == 11%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            <a href="#state8">State<br>#8</a>
+            <a href="#state9">State<br>#9</a>
+            <a href="#state10">State<br>#10</a>
+            <a href="#state11">State<br>#11</a>
+            {% endif %}
+
+            {%if state == 12%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            <a href="#state8">State<br>#8</a>
+            <a href="#state9">State<br>#9</a>
+            <a href="#state10">State<br>#10</a>
+            <a href="#state11">State<br>#11</a>
+            <a href="#state12">State<br>#12</a>
+            {% endif %}
+
+            {%if state == 13%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            <a href="#state8">State<br>#8</a>
+            <a href="#state9">State<br>#9</a>
+            <a href="#state10">State<br>#10</a>
+            <a href="#state11">State<br>#11</a>
+            <a href="#state12">State<br>#12</a>
+            <a href="#state13">State<br>#13</a>
+            {% endif %}
+
+            {%if state == 14%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            <a href="#state8">State<br>#8</a>
+            <a href="#state9">State<br>#9</a>
+            <a href="#state10">State<br>#10</a>
+            <a href="#state11">State<br>#11</a>
+            <a href="#state12">State<br>#12</a>
+            <a href="#state13">State<br>#13</a>
+            <a href="#state14">State<br>#14</a>
+            {% endif %}
+
+            {%if state == 15%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            <a href="#state8">State<br>#8</a>
+            <a href="#state9">State<br>#9</a>
+            <a href="#state10">State<br>#10</a>
+            <a href="#state11">State<br>#11</a>
+            <a href="#state12">State<br>#12</a>
+            <a href="#state13">State<br>#13</a>
+            <a href="#state14">State<br>#14</a>
+            <a href="#state15">State<br>#15</a>
+            {% endif %}
+
+            {%if state == 16%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            <a href="#state8">State<br>#8</a>
+            <a href="#state9">State<br>#9</a>
+            <a href="#state10">State<br>#10</a>
+            <a href="#state11">State<br>#11</a>
+            <a href="#state12">State<br>#12</a>
+            <a href="#state13">State<br>#13</a>
+            <a href="#state14">State<br>#14</a>
+            <a href="#state15">State<br>#15</a>
+            <a href="#state16">State<br>#16</a>
+            {% endif %}
+
+            {%if state == 17%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            <a href="#state8">State<br>#8</a>
+            <a href="#state9">State<br>#9</a>
+            <a href="#state10">State<br>#10</a>
+            <a href="#state11">State<br>#11</a>
+            <a href="#state12">State<br>#12</a>
+            <a href="#state13">State<br>#13</a>
+            <a href="#state14">State<br>#14</a>
+            <a href="#state15">State<br>#15</a>
+            <a href="#state17">State<br>#17</a>
+            {% endif %}
+
+            {%if state == 18%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            <a href="#state8">State<br>#8</a>
+            <a href="#state9">State<br>#9</a>
+            <a href="#state10">State<br>#10</a>
+            <a href="#state11">State<br>#11</a>
+            <a href="#state12">State<br>#12</a>
+            <a href="#state13">State<br>#13</a>
+            <a href="#state14">State<br>#14</a>
+            <a href="#state15">State<br>#15</a>
+            <a href="#state17">State<br>#17</a>
+            <a href="#state18">State<br>#18</a>
+            {% endif %}
+
+            {%if state == 19%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            <a href="#state8">State<br>#8</a>
+            <a href="#state9">State<br>#9</a>
+            <a href="#state10">State<br>#10</a>
+            <a href="#state11">State<br>#11</a>
+            <a href="#state12">State<br>#12</a>
+            <a href="#state13">State<br>#13</a>
+            <a href="#state14">State<br>#14</a>
+            <a href="#state15">State<br>#15</a>
+            <a href="#state17">State<br>#17</a>
+            <a href="#state18">State<br>#18</a>
+            <a href="#state19">State<br>#19</a>
+            {% endif %}
+
+            {%if state == 20%}
+            <a href="#state1">State<br>#1</a>
+            <a href="#state2">State<br>#2</a>
+            <a href="#state3">State<br>#3</a>
+            <a href="#state4">State<br>#4</a>
+            <a href="#state5">State<br>#5</a>
+            <a href="#state6">State<br>#6</a>
+            <a href="#state7">State<br>#7</a>
+            <a href="#state8">State<br>#8</a>
+            <a href="#state9">State<br>#9</a>
+            <a href="#state10">State<br>#10</a>
+            <a href="#state11">State<br>#11</a>
+            <a href="#state12">State<br>#12</a>
+            <a href="#state13">State<br>#13</a>
+            <a href="#state14">State<br>#14</a>
+            <a href="#state15">State<br>#15</a>
+            <a href="#state17">State<br>#17</a>
+            <a href="#state18">State<br>#18</a>
+            <a href="#state19">State<br>#19</a>
+            <a href="#state20">State<br>#20</a>
+            {% endif %}
+        </div>
+        <!-- The display block which indicates what state the device is currently in -->
+        <div id = "home" class = "home">
+            <p class="subtitle"></p>
+            <p class="subtitle">The connected device is currently in <b>State {{state}}</b></p>
+            <p class="subtitle"></p>
+            <p class="subtitle">Use the Navigation Bar above to view the last 20 states </p>
+        </div>
+        <!-- The display block which holds the actual state diagram (linked to pusher) -->
+        <div id="paper" class = "chart"></div>
+        <!-- Table which displays overall stats and specs (linked to pusher) -->
+        <table id = "t1" class="customers">
+            <tr>
+              <th> Current State </th>
+              <th> Port Event </th>
+              <th> Port Voltage </th>
+              <th> Is Cisco PD </th>
+              <th> Connection Check </th>
+              <th> Port Priority </th>
+              <th> 4 Pair P-Cut </th>
+              <th> Time Sec </th>
+              <th> Time Usec </th>
+            </tr>
+            <tr>
+              <td id = "Current State" ></td>
+              <td id = "Port Event" ></td>
+              <td id = "Port Voltage" ></td>
+              <td id = "Is Cisco PD" ></td>
+              <td id = "Connection Check" ></td>
+              <td id = "Port Priority" ></td>
+              <td id = "4 Pair P-Cut" ></td>
+              <td id = "Time Sec" ></td>
+              <td id = "Time Usec" ></td>
+            </tr>
+        </table>
+    </div>
+    <div class = "container">
+        <!-- Table which displays signal pair data (linked to pusher) -->
+        <div class="column2">
+            <table id = "t2" class="customers">
+                <tr>
+                  <th colspan="4"> Signal Pair </th>
+                </tr>
+                <tr>
+                  <th>Field </th>
+                  <th>Current Value</th>
+                  <th>IEEE Spec</th>
+                  <th>Compliant?</th>
+                <tr>
+                <tr>
+                  <td><b>Consumed Power</b></td>
+                  <td id = "Signal Consumed Power" ></td>
+                </tr>
+                <tr>
+                  <td><b>Pcut/Icut</b></td>
+                  <td id = "Signal Pcut/Icut" ></td>
+                </tr>
+                <tr>
+                  <td><b>Capacitance</b></td>
+                  <td id = "Signal Capacitance" ></td>
+                </tr>
+                <tr>
+                  <td><b>Resistance</b></td>
+                  <td id = "Signal Resistance" ></td>
+                </tr>
+                <tr>
+                  <td><b>Detect Status</b></td>
+                  <td id = "Signal Detect Status" ></td>
+                </tr>
+                <tr>
+                  <td><b>Class</b></td>
+                  <td id = "Signal Class" ></td>
+                </tr>
+            </table>
+        </div>
+        <div class="column2">
+            <table id = "t3" class="customers">
+                <tr>
+                  <th colspan="4"> Spare Pair </th>
+                </tr>
+                <tr>
+                  <th>Field </th>
+                  <th>Current Value</th>
+                  <th>IEEE Spec</th>
+                  <th>Compliant?</th>
+                <tr>
+                <tr>
+                  <td><b>Consumed Power</b></td>
+                  <td id = "Spare Consumed Power" ></td>
+                </tr>
+                <tr>
+                  <td><b>Pcut/Icut</b></td>
+                  <td id = "Spare Pcut/Icut" ></td>
+                </tr>
+                <tr>
+                  <td><b>Capacitance</b></td>
+                  <td id = "Spare Capacitance" ></td>
+                </tr>
+                <tr>
+                  <td><b>Resistance</b></td>
+                  <td id = "Spare Resistance" ></td>
+                </tr>
+                <tr>
+                  <td><b>Detect Status</b></td>
+                  <td id = "Spare Detect Status" ></td>
+                </tr>
+                <tr>
+                  <td><b>Class</b></td>
+                  <td id = "Spare Class" ></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</section>
+
+    <!-- dependencies -->
+    <!-- imports the jquery.js library which powers the top navigation bar -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone.js"></script>
+    <!-- imports the joint.js library which powers the state diagram view -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/2.1.0/joint.js"></script>
+    <!-- import Pusher-js library -->
+    <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+
+    <!-- code -->
+    <script type="text/javascript">
+        //function for the top navigation bar which displays the corresponding state transitions based on selection
+        $(function() {
+            $( '.topnav a' ).on( 'click', function() {
+                $( this ).parent().find( 'a.active' ).removeClass( 'active' );
+                $( this ).addClass( 'active' );
+                var x = $( this ).attr("href");
+                if (x !== "#home"){
+                    $("#t1").show();
+                    $("#t2").show();
+                    $("#t3").show();
+                    $("#paper").show();
+                    var y = x.replace("#state","");
+                    var z = parseInt(y) - 1;
+                    //displays the correct state data
+                    display(z);
+                } else {
+                    $("#t1").hide();
+                    $("#t2").hide();
+                    $("#t3").hide();
+                    $("#paper").hide();
+                }
+            });
+        });
+        // connect to Pusher
+        const pusher = new Pusher('00a5e21b49f59b9f953a', {
+            cluster: 'us3', // gotten from Pusher app dashboard
+            encrypted: true // optional
+          });
+        // subscribe to corresponding crypto channel specified in data passed in the flask route 
+        //(this allows for multiple webpages to be accessed using different flask routes without mixing up the data which is displayed)
+        const channel = pusher.subscribe("{{t}}");
+        //global data structure which stores the corresponding data for the page
+        var data;
+        // listen for relevant events
+        channel.bind("data-updated", data_dict => {
+            data = data_dict["{{t}}"];
+        });
+        //display function which displays the correct state based on the parameter passed
+        function display(a){
+            //Overall Table data
+            document.getElementById("Current State").innerHTML = data[0][a][1];
+            document.getElementById("Port Event").innerHTML = data[0][a][2];
+            document.getElementById("Port Voltage").innerHTML = data[0][a][3];
+            document.getElementById("Time Sec").innerHTML = data[0][a][4];
+            document.getElementById("Time Usec").innerHTML = data[0][a][5];
+            document.getElementById("Is Cisco PD").innerHTML = data[0][a][7];
+            document.getElementById("Connection Check").innerHTML = data[0][a][8];
+            document.getElementById("Port Priority").innerHTML = data[0][a][6];
+            document.getElementById("4 Pair P-Cut").innerHTML = data[0][a][9];
+            //Signal Pair data table
+            document.getElementById("Signal Consumed Power").innerHTML = data[1][a][0];
+            document.getElementById("Signal Pcut/Icut").innerHTML = data[1][a][1];
+            document.getElementById("Signal Capacitance").innerHTML = data[1][a][2];
+            document.getElementById("Signal Resistance").innerHTML = data[1][a][3];
+            document.getElementById("Signal Detect Status").innerHTML = data[1][a][4];
+            document.getElementById("Signal Class").innerHTML = data[1][a][5];
+            //Spare Pair data table
+            document.getElementById("Spare Consumed Power").innerHTML = data[2][a][0];
+            document.getElementById("Spare Pcut/Icut").innerHTML = data[2][a][1];
+            document.getElementById("Spare Capacitance").innerHTML = data[2][a][2];
+            document.getElementById("Spare Resistance").innerHTML = data[2][a][3];
+            document.getElementById("Spare Detect Status").innerHTML = data[2][a][4];
+            document.getElementById("Spare Class").innerHTML = data[2][a][5];
+
+            //state diagram
+            var graph = new joint.dia.Graph;
+            var paper = new joint.dia.Paper({
+                el: document.getElementById('paper'),
+                width: 1400,
+                height: 250,
+                model: graph,
+                defaultConnectionPoint: { name: 'boundary' },
+                defaultConnector: { name: 'smooth' },
+                interactive: { linkMove: false },
+                frozen: true
+            });
+            //creates a circular object for the state
+            function state(x, y, label, fillColor) {
+                var circle = new joint.shapes.standard.Circle({
+                    position: { x: x, y: y },
+                    size: { width: 150, height: 150 },
+                    attrs: {
+                        label : {
+                            text: label,
+                            fontWeight: 'bold',
+                            fill: "#FFFFFF"
+                        },
+                        body: {
+                            strokeWidth: 3,
+                            fill: fillColor,
+                            //stroke: '#FF3333'
+                        }
+                    }
+                });
+                return circle.addTo(graph);
+            }
+            //creates the initial state marker
+            function initState(x, y, label) {
+                var marker = new joint.shapes.standard.Rectangle({
+                    position: { x: x, y: y },
+                    size: { width: 100, height: 50 },
+                    attrs: {
+                        label: {
+                            text:label,
+                            fontWeight: 'bold'
+                        },
+                        body: {
+                            strokeWidth: 2
+                        }
+                    }
+                });
+                return marker.addTo(graph);
+            }
+            //creates an arrow link between states
+            function link(source, target, label, vertices) {
+                var link = new joint.shapes.standard.Link({
+                    source: { id: source.id },
+                    target: { id: target.id },
+                    attrs: {
+                        line: {
+                            strokeWidth: 2
+                        }
+                    },
+                    labels: [{
+                        position: {
+                            distance: 0.5,
+                            offset: (label.indexOf('\n') > -1 || label.length === 1) ? 0 : 10,
+                            args: {
+                                keepGradient: true,
+                                ensureLegibility: true
+                            }
+                        },
+                        attrs: {
+                            text: {
+                                text: label,
+                                fontWeight: 'bold'
+                            }
+                        }
+                    }],
+                    vertices: vertices || []
+                });
+                return link.addTo(graph);
+            }
+            
+            //var marker1 = initState(30, 500, 'AUTO');
+            //var marker2 = initState(280, 500, 'CLASSDONE');
+            //var marker3 = initState(530, 500, 'APPROVE');
+            //var marker4 = initState(780, 500, 'PGOOD');
+            //var marker5 = initState(1030, 500, 'DISC');
+            //var marker6 = initState(1030, 200, 'SHUT');
+            
+            if (data[0][a][1] == "poe-none"){
+                var shut  = state(25, 50, 'Shut', '#7e7e7e');
+                var detecting = state(275, 50, 'Detecting', '#7e7e7e');
+                var detected = state(525, 50, 'Detected', '#7e7e7e');
+                var powering  = state(775, 50, 'Powering', '#7e7e7e');
+                var powered = state(1025, 50, 'Powered', '#7e7e7e');
+            }
+            else if (data[0][a][1] == "poe-shut"){
+                var shut  = state(25, 50, 'Shut', '#1F77B4');
+                var detecting = state(275, 50, 'Detecting', '#7e7e7e');
+                var detected = state(525, 50, 'Detected', '#7e7e7e');
+                var powering  = state(775, 50, 'Powering', '#7e7e7e');
+                var powered = state(1025, 50, 'Powered', '#7e7e7e');
+            }
+            else if (data[0][a][1] == "poe-state-detecting-s"){
+                var shut  = state(25, 50, 'Shut', '#7e7e7e');
+                var detecting = state(275, 50, 'Detecting', '#1F77B4');
+                var detected = state(525, 50, 'Detected', '#7e7e7e');
+                var powering  = state(775, 50, 'Powering', '#7e7e7e');
+                var powered = state(1025, 50, 'Powered', '#7e7e7e');
+                if (data[0][a][2] == "periodic-poll-ev"){
+                    link(detecting, detecting, 'T1', [{ x: 235, y: 60 }, { x: 275, y: 20 }]);
+                }
+            }
+            else if (data[0][a][1] == "poe-pd-detected-s"){
+                var shut  = state(25, 50, 'Shut', '#7e7e7e');
+                var detecting = state(275, 50, 'Detecting', '#7e7e7e');
+                var detected = state(525, 50, 'Detected', '#1F77B4');
+                var powering  = state(775, 50, 'Powering', '#7e7e7e');
+                var powered = state(1025, 50, 'Powered', '#7e7e7e');
+                if (data[0][a][2] == "periodic-poll-ev"){
+                    link(detected, detected, 'T1', [{ x: 485, y: 60 }, { x: 525, y: 20 }]);
+                }
+            }
+            else if (data[0][a][1] == "poe-state-powering-s"){
+                var shut  = state(25, 50, 'Shut', '#7e7e7e');
+                var detecting = state(275, 50, 'Detecting', '#7e7e7e');
+                var detected = state(525, 50, 'Detected', '#7e7e7e');
+                var powering  = state(775, 50, 'Powering', '#1F77B4');
+                var powered = state(1025, 50, 'Powered', '#7e7e7e');
+                if (data[0][2] == "periodic-poll-ev"){
+                    link(powering, powering, 'T1', [{ x: 735, y: 60 }, { x: 775, y: 20 }]);
+                }
+            }
+            else if (data[0][a][1] == "poe-powered-s"){
+                var shut  = state(25, 50, 'Shut', '#7e7e7e');
+                var detecting = state(275, 50, 'Detecting', '#7e7e7e');
+                var detected = state(525, 50, 'Detected', '#7e7e7e');
+                var powering  = state(775, 50, 'Powering', '#7e7e7e');
+                var powered = state(1025, 50, 'Powered', '#1F77B4');
+                if (data[0][a][2] == "periodic-poll-ev"){
+                    link(powered, powered, 'T1', [{ x: 1175, y: 20} , { x:1215, y: 60 }]);
+                }
+            }
+            
+            /*
+            link(marker1, shut,  '');
+            link(marker2, detecting, '');
+            link(marker3, detected, '');
+            link(marker4, powering, '');
+            link(marker5, powered, '');
+            link(marker6, powered, '');
+            */
+            
+            link(shut, detecting, '');
+            link(detecting, detected, '');
+            link(detected, powering, '');
+            link(powering, powered, '');
+
+            //link(powering, powering, 'T2', [{ x: 905, y: 270} , { x:945, y: 310 }]);
+            
+            
+            //link(powered, shut, '', [{x: 905, y: 180}, {x: 580, y: 80}, {x:255, y: 180}]);
+    
+            paper.unfreeze();
+        }
+        
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,486 @@
+<!-- This is the template which pulls up the respective poe graph view pages -->
+<!-- Chart data and table data is pushed every 5 seconds from python script using PUSHER utility and displayed -->
+<!-- This template is dynamic in that multiple pages can be opened based on this template and the python flask route and display different data -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <style>
+        /* CSS styles for the table id */
+        * {
+            box-sizing: border-box;
+          }
+          /* Create two unequal columns that floats next to each other */
+          .column {
+            float: left;
+            padding: 10px;
+            height: 680px;
+          }
+
+          .left {
+            width: 33%;
+          }
+
+          .right {
+            width: 67%;
+          }
+          /* Clear floats after the columns */
+          .row:after {
+            content: "";
+            display: table;
+            clear: both;
+          }
+          .column2 {
+            padding: 10px;
+            float: left;
+            width: 25%;
+            height: 395px;
+          }
+        .customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+          }
+          .customers td, .customers th {
+            border: 1.5px solid #EEEEEE;
+            padding: 7.67px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 16px;
+          }
+          .customers tr:nth-child(even){background-color: #ffffff;}
+          .customers tr:nth-child(odd){background-color: #ffffff;}
+          .customers tr:hover {background-color: #ddd;}
+          .customers th {
+            padding-top: 9px;
+            padding-bottom: 9px;
+            text-align: left;
+            background-color: #1F77B4;
+            color: white;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 18px;
+          }
+
+        .customers2 {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 19px;
+          }
+          .customers2 td, .customers2 th {
+            border: 1.5px solid #EEEEEE;
+            padding: 3px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 14px;
+          }
+          .customers2 tr:nth-child(even){background-color: #ffffff;}
+          .customers2 tr:nth-child(odd){background-color: #ffffff;}
+          .customers2 tr:hover {background-color: #ddd;}
+          .customers2 th {
+            padding-top: 4px;
+            padding-bottom: 4px;
+            text-align: left;
+            background-color: #1F77B4;
+            color: white;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 16px;
+          }
+
+          /* CSS styles for the chart class */
+        .chart {
+            height: 660px;
+        }
+    </style>
+</head>
+<body>
+<section class="section">
+    <div class="container">
+        <!-- The title data is statically accessed from the flask route -->
+        <h1 class="title">{{t}} </h1>
+        <p class="subtitle">Device Name: {{n}} </p>
+        <p class="subtitle"><a href="sd/{{t}}" target="_blank">State Diagram</a></p>
+        <hr>
+    </div> 
+    <div class = "container">
+      <div class="column left" style="background-color:#d3d3d3;">
+        <!-- This is the table which displays some of the key stats (linked to pusher) -->
+          <table class="customers">
+              <tr>
+                <th colspan="2"> POE Overall Operation Data </th>
+              </tr>
+              <tr>
+                <td> <b> Interface Name </b> </td>
+                <td id = "intf_name"></td>
+              </tr>
+              <tr>
+                <td> <b> POE Interface Enabled </b> </td>
+                <td id = "poe_intf_enabled"></td>
+              </tr>
+              <tr>
+                <td> <b> Power Allocated </b> </td>
+                <td id = "power_allocated"></td>
+              </tr>
+              <tr>
+                <td> <b> PD Class </b> </td>
+                <td id = "pd_class"></td>
+              </tr>
+              <tr>
+                <td> <b> Oper State </b> </td>
+                <td id = "oper_state"></td>
+              </tr>
+              <tr>
+                <td> <b> Admin State </b> </td>
+                <td id = "admin_state"></td>
+              </tr>
+              <tr>
+                <td> <b> Oper Power </b> </td>
+                <td id = "oper_power"></td>
+              </tr>
+              <tr>
+                <td> <b> Admin Police </b> </td>
+                <td id = "admin_police"></td>
+              </tr>
+              <tr>
+                <td> <b> Oper Police </b> </td>
+                <td id = "oper_police"></td>
+              </tr>
+              <tr>
+                <td> <b> Cutoff Power Police </b> </td>
+                <td id = "cutoff_power_police"></td>
+              </tr>
+              <tr>
+                <td> <b> Module </b> </td>
+                <td id = "module"></td>
+              </tr>
+              <tr>
+                <td> <b> Highest Power </b> </td>
+                <td id = "Highest Power"></td>
+              </tr>
+              <tr>
+                <td> <b> Date </b> </td>
+                <td id = "Date"></td>
+              </tr>
+              <tr>
+                <td> <b> Time </b> </td>
+                <td id = "Time"></td>
+              </tr>
+              <tr>
+                <td> <b> Compliance </b> </td>
+                <td id = "Compliant"></td>
+              </tr>
+            </table>
+      </div>
+      <!-- This is the block which will hold the plotly graph (this is uniquely named based on the title passed in the flask route) -->
+      <div class="column right" style="background-color:#d3d3d3;">
+          <div id={{t}} class="chart"></div>
+      </div>
+    </div>
+    <div class = "container">
+      <div class="column2" style="background-color:#d3d3d3;">
+        <table class="customers2">
+              <tr>
+                <th colspan="2"> Overall LLDP Data </th>
+              </tr>
+              <tr>
+                <td> <b> Oper Status </b> </td>
+                <td id = "oper_status"></td>
+              </tr>
+              <tr>
+                <td> <b> Device Detected </b> </td>
+                <td id = "device_detected"></td>
+              </tr>
+              <tr>
+                <td> <b> Device Name </b> </td>
+                <td id = "device_name"></td>
+              </tr>
+              <tr>
+                <td> <b> Discovery </b> </td>
+                <td id = "discovery"></td>
+              </tr>
+              <tr>
+                <td> <b> Police State On </b> </td>
+                <td id = "police_state_on"></td>
+              </tr>
+              <tr>
+                <td> <b> Power Admin Max </b> </td>
+                <td id = "power_admin_max"></td>
+              </tr>
+              <tr>
+                <td> <b> Power from PSE </b> </td>
+                <td id = "power_from_pse"></td>
+              </tr>
+              <tr>
+                <td> <b> Power to PD </b> </td>
+                <td id = "power_to_pd"></td>
+              </tr>
+              <tr>
+                <td> <b> Power Consumption </b> </td>
+                <td id = "power_consumption"></td>
+              </tr>
+              <tr>
+                <td> <b> Max Power Drawn </b> </td>
+                <td id = "max_power_drawn"></td>
+              </tr>
+              <tr>
+                <td> <b> Power Negotiation Used </b> </td>
+                <td id = "power_negotiation_used"></td>
+              </tr>
+        </table>
+      </div>
+      <div class="column2" style="background-color:#d3d3d3;">
+        <table class="customers2">
+              <tr>
+                <th colspan="2"> LLDP TX Data </th>
+              </tr>
+              <tr>
+                <td> <b> Power Type </b> </td>
+                <td id = "lldp_tx_power_type"></td>
+              </tr>
+              <tr>
+                <td> <b> Power Source </b> </td>
+                <td id = "lldp_tx_power_source"></td>
+              </tr>
+              <tr>
+                <td> <b> Power Priority </b> </td>
+                <td id = "lldp_tx_power_priority"></td>
+              </tr>
+              <tr>
+                <td> <b> Power Requested </b> </td>
+                <td id = "lldp_tx_power_requested"></td>
+              </tr>
+              <tr>
+                <td> <b> Power Allocated </b> </td>
+                <td id = "lldp_tx_power_allocated"></td>
+              </tr>
+        </table>
+        <table class="customers2">
+              <tr>
+                <th colspan="2"> LLDP RX Data </th>
+              </tr>
+              <tr>
+                <td> <b> Power Type </b> </td>
+                <td id = "lldp_rx_power_type"></td>
+              </tr>
+              <tr>
+                <td> <b> Power Source </b> </td>
+                <td id = "lldp_rx_power_source"></td>
+              </tr>
+              <tr>
+                <td> <b> Power Priority </b> </td>
+                <td id = "lldp_rx_power_priority"></td>
+              </tr>
+              <tr>
+                <td> <b> Power Requested </b> </td>
+                <td id = "lldp_rx_power_requested"></td>
+              </tr>
+              <tr>
+                <td> <b> Power Allocated </b> </td>
+                <td id = "lldp_rx_power_allocated"></td>
+              </tr>
+        </table>
+      </div>
+      <div class="column2" style="background-color:#d3d3d3;">
+        <table class="customers2">
+              <tr>
+                <th colspan="2"> Four Pair Data </th>
+              </tr>
+              <tr>
+                <td> <b> Four Pair POE Supported </b> </td>
+                <td id = "four_pair_poe_supported"></td>
+              </tr>
+              <tr>
+                <td> <b> Four Pair POE Enabled </b> </td>
+                <td id = "four_pair_poe_enabled"></td>
+              </tr>
+              <tr>
+                <td> <b> Four Pair PD Arch </b> </td>
+                <td id = "four_pair_pd_arch"></td>
+              </tr>
+        </table>
+        <table class="customers2">
+              <tr>
+                <th colspan="2"> Current Counter Data </th>
+              </tr>
+              <tr>
+                <td> <b> Over Current Counter </b> </td>
+                <td id = "over_current_counter"></td>
+              </tr>
+              <tr>
+                <td> <b> Short Current Counter </b> </td>
+                <td id = "short_current_counter"></td>
+              </tr>
+        </table>
+      </div>
+      <div class="column2" style="background-color:#d3d3d3;">
+        <table class="customers2">
+              <tr>
+                <th colspan="2"> POE Detail Data </th>
+              </tr>
+              <tr>
+                <td> <b> Initialization </b> </td>
+                <td id = "initialization"></td>
+              </tr>
+              <tr>
+                <td> <b> ILP Supported </b> </td>
+                <td id = "ilp_supported"></td>
+              </tr>
+              <tr>
+                <td> <b> ILP Enabled </b> </td>
+                <td id = "ilp_enabled"></td>
+              </tr>
+              <tr>
+                <td> <b> Post </b> </td>
+                <td id = "post"></td>
+              </tr>
+              <tr>
+                <td> <b> Power On </b> </td>
+                <td id = "power_on"></td>
+              </tr>
+              <tr>
+                <td> <b> Power Denied </b> </td>
+                <td id = "power_denied"></td>
+              </tr>
+              <tr>
+                <td> <b> State </b> </td>
+                <td id = "state"></td>
+              </tr>
+              <tr>
+                <td> <b> Short Circuit Detected </b> </td>
+                <td id = "short_circuit_detected"></td>
+              </tr>
+              <tr>
+                <td> <b> Spare Pair Mode </b> </td>
+                <td id = "spare_pair_mode"></td>
+              </tr>
+              <tr>
+                <td> <b> Spare Pair Power is On </b> </td>
+                <td id = "spare_pair_power_is_on"></td>
+              </tr>
+              <tr>
+                <td> <b> PD Power State </b> </td>
+                <td id = "pd_power_state"></td>
+              </tr>
+        </table>
+      </div>
+    </div>
+</section>
+
+    <!-- D3.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- import Pusher-js library -->
+    <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+    <script type="text/javascript">
+      // connect to Pusher
+      const pusher = new Pusher('00a5e21b49f59b9f953a', {
+        cluster: 'us3', // gotten from Pusher app dashboard
+        encrypted: true // optional
+      });
+      // subscribe to corresponding crypto channel specified in data passed in the flask route 
+      //(this allows for multiple webpages to be accessed using different flask routes without mixing up the data which is displayed)
+      const channel = pusher.subscribe("{{c}}");
+      // listen for relevant events
+        channel.bind('data-updated', final_data => {
+            //graph data is accessed using the key specified in the data passed in the flask route
+            const graph = JSON.parse(final_data[0]["{{k}}"]);
+            //layout of graph
+            var layout = {
+                title: {
+                  text: 'Power Consumption',
+                  font: {
+                    size: 24
+                  }
+                },
+                legend: {"orientation": "h"},
+                xaxis: {
+                  title: {
+                    text: 'Timestamp',
+                    font: {
+                      size: 14,
+                      color: '#7f7f7f'
+                    }
+                  },
+                },
+                yaxis: {
+                  title: {
+                    text: 'Watts',
+                    font: {
+                      size: 14,
+                      color: '#7f7f7f'
+                    }
+                  },
+                  range: [0,20]
+                }
+            };
+            //creates a new plotly plot which is passed to the uniquely named html block specified in flask route and with the graph data and layout parameteres passed in
+            Plotly.newPlot({{t}}, graph, layout);
+            //passes the other data and specs and displays them in the corresponding cells of the table
+            document.getElementById("intf_name").innerHTML = final_data[1][10];
+            document.getElementById("poe_intf_enabled").innerHTML = final_data[1][0];
+            document.getElementById("power_allocated").innerHTML = final_data[1][1];
+            document.getElementById("pd_class").innerHTML = final_data[1][2];
+            document.getElementById("oper_state").innerHTML = final_data[1][3];
+            document.getElementById("admin_state").innerHTML = final_data[1][4];
+            document.getElementById("oper_power").innerHTML = final_data[1][5];
+            document.getElementById("admin_police").innerHTML = final_data[1][6];
+            document.getElementById("oper_police").innerHTML = final_data[1][7];
+            document.getElementById("cutoff_power_police").innerHTML = final_data[1][8];
+            document.getElementById("module").innerHTML = final_data[1][9];
+            document.getElementById("Highest Power").innerHTML = final_data[2][0]
+            document.getElementById("Date").innerHTML = final_data[2][1]
+            document.getElementById("Time").innerHTML = final_data[2][2]
+            document.getElementById("Compliant").innerHTML = final_data[2][3]
+
+            document.getElementById("oper_status").innerHTML = final_data[3][0];
+            document.getElementById("device_detected").innerHTML = final_data[3][1];
+            document.getElementById("device_name").innerHTML = final_data[3][2];
+            document.getElementById("discovery").innerHTML = final_data[3][3];
+            document.getElementById("police_state_on").innerHTML = final_data[3][4];
+            document.getElementById("power_admin_max").innerHTML = final_data[3][5];
+            document.getElementById("power_from_pse").innerHTML = final_data[3][6];
+            document.getElementById("power_to_pd").innerHTML = final_data[3][7];
+            document.getElementById("power_consumption").innerHTML = final_data[3][8];
+            document.getElementById("max_power_drawn").innerHTML = final_data[3][9];
+            document.getElementById("power_negotiation_used").innerHTML = final_data[3][10];
+
+            document.getElementById("lldp_tx_power_type").innerHTML = final_data[4][0];
+            document.getElementById("lldp_tx_power_source").innerHTML = final_data[4][1];
+            document.getElementById("lldp_tx_power_priority").innerHTML = final_data[4][2];
+            document.getElementById("lldp_tx_power_requested").innerHTML = final_data[4][3];
+            document.getElementById("lldp_tx_power_allocated").innerHTML = final_data[4][4];
+
+            document.getElementById("lldp_rx_power_type").innerHTML = final_data[5][0];
+            document.getElementById("lldp_rx_power_source").innerHTML = final_data[5][1];
+            document.getElementById("lldp_rx_power_priority").innerHTML = final_data[5][2];
+            document.getElementById("lldp_rx_power_requested").innerHTML = final_data[5][3];
+            document.getElementById("lldp_rx_power_allocated").innerHTML = final_data[5][4];
+
+            document.getElementById("four_pair_poe_supported").innerHTML = final_data[6][0];
+            document.getElementById("four_pair_poe_enabled").innerHTML = final_data[6][1];
+            document.getElementById("four_pair_pd_arch").innerHTML = final_data[6][2];
+            document.getElementById("over_current_counter").innerHTML = final_data[6][3];
+            document.getElementById("short_current_counter").innerHTML = final_data[6][4];
+
+            document.getElementById("initialization").innerHTML = final_data[7][0];
+            document.getElementById("ilp_supported").innerHTML = final_data[7][1];
+            document.getElementById("ilp_enabled").innerHTML = final_data[7][2];
+            document.getElementById("post").innerHTML = final_data[7][3];
+            document.getElementById("power_on").innerHTML = final_data[7][4];
+            document.getElementById("power_denied").innerHTML = final_data[7][5];
+            document.getElementById("state").innerHTML = final_data[7][6];
+            document.getElementById("short_circuit_detected").innerHTML = final_data[7][7];
+            document.getElementById("spare_pair_mode").innerHTML = final_data[7][8];
+            document.getElementById("spare_pair_power_is_on").innerHTML = final_data[7][9];
+            document.getElementById("pd_power_state").innerHTML = final_data[7][10];
+
+        });
+    </script>
+</body>
+</html>
