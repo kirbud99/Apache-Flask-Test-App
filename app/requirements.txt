@@ -19,7 +19,7 @@ ncclient==0.6.0
 ndg-httpsclient==0.5.1
 paramiko==3.4.0
 plotly==4.1.0
-protobuf==3.18.3
+protobuf==4.25.8
 pusher==2.1.4
 pyasn1==0.4.6
 pycparser==2.19
